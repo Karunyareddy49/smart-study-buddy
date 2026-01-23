@@ -1,0 +1,80 @@
+/* General page settings */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 20px;
+    padding: 0;
+    background-color: #f7f9fc;
+    color: #333;
+}
+
+/* Headings */
+h1 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+}
+
+h2 {
+    color: #34495e;
+}
+
+/* Links */
+a {
+    color: #2980b9;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* Lists */
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+/* Buttons */
+button {
+    background-color: #2980b9;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #1f618d;
+}
+
+/* Forms */
+input[type="text"], input[type="radio"] {
+    margin: 5px 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Quiz questions */
+hr {
+    margin: 15px 0;
+    border: 0;
+    border-top: 1px solid #ccc;
+}
+
+/* Container for content */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
