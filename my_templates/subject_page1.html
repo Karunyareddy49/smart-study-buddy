@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ subject }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header>{{ subject }}</header>
+
+<div class="container" style="flex-direction: column; gap: 15px;">
+
+    <a class="card" href="{{ url_for('subject_questions', subject=subject) }}">
+        📖 View Questions
+    </a>
+
+    <a class="card" href="{{ url_for('ai_quiz', sub=subject) }}">
+">
+        📝 Take Quiz
+    </a>
+
+    <a class="card" href="{{ url_for('ask', subject=subject) }}">
+        ❓ Ask AI
+    </a>
+
+</div>
+
+<a href="{{ url_for('home') }}">⬅ Back to Home</a>
+</body>
+</html>
+
