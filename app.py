@@ -1,5 +1,6 @@
 import os
 import json
+from flask import send_from_directory
 from flask import Flask, render_template, request
 from urllib.parse import unquote
 from google import genai
@@ -12,7 +13,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 app = Flask(
     __name__,
-    template_folder=os.path.join(BASE_DIR, "my_templates"),
+    template_folder=os.path.join(BASE_DIR, "templates"),
     static_folder=os.path.join(BASE_DIR, "static")
 )
 
@@ -146,6 +147,11 @@ def generate_ai_mcqs(subject, num_questions=5):
 # ROUTES
 # --------------------------
 
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'),
+                              'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
 @app.route("/")
 def home():
     return render_template("home.html", subjects=subjects)
@@ -220,3 +226,5 @@ def ai_quiz(sub):
 # --------------------------
 # Run App
 # --------------------------
+if __name__ == "__main__":
+    app.run(debug=True)
