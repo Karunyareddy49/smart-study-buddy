@@ -10,7 +10,7 @@
 
 <div class="container" style="flex-direction: column; gap: 15px;">
 
-    <a class="card" href="{{ url_for('subject_questions', subject=subject) }}">
+    <a class="card" href="{{ url_for('subject_questions', sub=subject) }}">
         📖 View Questions
     </a>
 
@@ -19,7 +19,7 @@
         📝 Take Quiz
     </a>
 
-    <a class="card" href="{{ url_for('ask', subject=subject) }}">
+    <a class="card" href="{{ url_for('ask', sub=subject) }}">
         ❓ Ask AI
     </a>
 
