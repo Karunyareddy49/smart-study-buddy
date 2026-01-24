@@ -173,7 +173,7 @@ def ask_ai2(sub):
 
     return render_template(
         "ask.html",
-        subject=subject,
+        subject=sub,
         question=question,
         answer=answer
     )
