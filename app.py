@@ -204,7 +204,9 @@ def ai_quiz(sub):
 
     mcqs = generate_ai_mcqs(sub, num_questions=5)
     return render_template("quiz.html", subject=sub, mcqs=mcqs, mcqs_json=json.dumps(mcqs))
-
+@app.errorhandler(404)
+def not_found(error):
+    return "<h1>404 - Page Not Found</h1><p>Try: <a href='/'>Home</a> or /subject/Math</p>", 404
 # --------------------------
 # Run app
 # --------------------------
