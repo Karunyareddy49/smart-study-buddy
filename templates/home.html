@@ -67,7 +67,7 @@
 <div class="container">
     {% set icons = ["🧮","🔬","📘","⚡"] %}
     {% for sub in subjects %}
-        <a class="card" href="{{ url_for('subject_page', sub=subject) }}">
+        <a class="card"  <a href="/subject/{{ sub }}">{{ sub }}</a>">
             <div class="icon">{{ icons[loop.index0 % icons|length] }}</div>
             <div class="text">{{ sub }}</div>
         </a>
