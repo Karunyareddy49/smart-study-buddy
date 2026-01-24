@@ -63,15 +63,16 @@
     </style>
 <body>
 <header>🤖 Smart Study Buddy</header>
-
-<div class="container">
+    <div class="container">
     {% set icons = ["🧮","🔬","📘","⚡"] %}
     {% for sub in subjects %}
-        <a class="card" href="/subject/{{ sub }}">{{ sub }}</a>
+        <a class="card" href="{{ url_for('subject_page', subject=subject) }}">
+            <div class="icon">{{ icons[loop.index0 % icons|length] }}</div>
             <div class="text">{{ sub }}</div>
-            <div class="icon">{{ icons[loop.index0 % icons|length] }}</div>  
         </a>
     {% endfor %}
+
+
 </div>
 </body>
 </html>
