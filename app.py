@@ -145,7 +145,7 @@ def not_found(error):
 def subject_page(sub):
     if not sub or sub not in subjects:
         return f"<h1>Invalid subject: {sub}</h1><a href='/'>Home</a>", 400
-    return render_template("subject_page1.html", subject=sub)
+    return render_template("subject_page1.html", subject=subjects)
 
 
 @app.route("/subject/<sub>/questions")
