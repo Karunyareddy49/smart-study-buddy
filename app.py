@@ -57,22 +57,31 @@ else:
 # Helper to get answer with subject-aware prompt and logging
 # --------------------------
 def get_answer(sub, question):
-    # 1. Pre-written (ALREADY WORKS)
+    print(f"🔍 DEBUG: Question='{question}', sub='{sub}'")
+    print(f"🔍 DEBUG: API key exists: {'GEMINI_API_KEY' in os.environ}")
+    
+    # Pre-written (WORKS)
     ans = questions.get(sub, {}).get(question)
     if ans:
+        print("✅ Using pre-written answer")
         return ans
 
-    # 2. Cache check
+    # Cache
     if question in ai_cache:
+        print("✅ Using cached answer")
         return ai_cache[question]
 
-    # 3. ✅ WORKING MODEL FOR genai.Client()
+    # MAX DEBUGGING
     try:
+        print("🔍 DEBUG: Calling Gemini...")
+        print(f"🔍 DEBUG: Available models: {list(client.models.list())}")
+        
         response = client.models.generate_content(
-            model="gemini-pro",  # ✅ STABLE, ALWAYS WORKS
-            contents=f"Simple {sub} answer: {question}"
+            model="gemini-pro",  # Most stable
+            contents=question    # Simple test
         )
         ans = response.text.strip()
+        print(f"✅ AI SUCCESS: {ans[:50]}...")
         
         ai_cache[question] = ans
         with open("ai_cache.json", "w") as f:
@@ -80,10 +89,9 @@ def get_answer(sub, question):
         return ans
         
     except Exception as e:
-        print(f"AI ERROR: {e}")
-        return f"AI failed (check Render logs). Pre-written questions work!"
-
-
+        error_msg = f"AI ERROR: {str(e)}"
+        print(error_msg)
+        return error_msg
 
 # --------------------------
 # AI MCQs
