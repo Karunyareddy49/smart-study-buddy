@@ -151,11 +151,8 @@ def subject_page(sub):
 @app.route("/subject/<sub>/questions")
 def view_questions(sub):
     sub_questions = questions.get(sub, {})
-    return render_template(
-        "questions.html",
-        subject=sub,
-        questions=sub_questions
-    )
+    return render_template("questions.html", subject=sub, questions=sub_questions)
+
 @app.route("/ai")
 def ask_ai():
     try:
