@@ -57,17 +57,20 @@ else:
 # Helper to get answer with subject-aware prompt and logging
 # --------------------------
 def get_answer(sub, question):
+    # 1. Pre-written (ALREADY WORKS)
     ans = questions.get(sub, {}).get(question)
-    if ans: return ans
-    
-    if question in ai_cache: return ai_cache[question]
-    
+    if ans:
+        return ans
+
+    # 2. Cache check
+    if question in ai_cache:
+        return ai_cache[question]
+
+    # 3. ✅ WORKING MODEL FOR genai.Client()
     try:
-        # ✅ FIX: Use stable model name
-        prompt = f"Simple {sub} answer: {question}"
         response = client.models.generate_content(
-            model="gemini-1.5-flash-exp",  # ← CHANGE THIS LINE ONLY
-            contents=prompt
+            model="gemini-pro",  # ✅ STABLE, ALWAYS WORKS
+            contents=f"Simple {sub} answer: {question}"
         )
         ans = response.text.strip()
         
@@ -77,8 +80,9 @@ def get_answer(sub, question):
         return ans
         
     except Exception as e:
-        print(f"AI failed: {e}")
-        return "Try pre-written questions (they work!)"
+        print(f"AI ERROR: {e}")
+        return f"AI failed (check Render logs). Pre-written questions work!"
+
 
 
 # --------------------------
