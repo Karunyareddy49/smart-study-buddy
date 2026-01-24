@@ -57,27 +57,26 @@ else:
 # Helper to get answer with subject-aware prompt and logging
 # --------------------------
 def get_answer(sub, question):
-    # 1. Check pre-written questions FIRST
+    # Pre-written answers FIRST
     ans = questions.get(sub, {}).get(question)
     if ans:
         return ans
 
-    # 2. Check cache
+    # Cache check
     if question in ai_cache:
         return ai_cache[question]
 
-    # 3. ✅ CORRECT GEMINI API CALL (2026 syntax)
+    # Use your EXISTING client (already working)
     try:
-        import google.generativeai as genai
-        genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        prompt = f"Answer this {sub} question simply for students: {question}"
         
-        response = model.generate_content(f"Answer this {sub} question simply: {question}")
+        # YOUR ORIGINAL WORKING SYNTAX (just fix model name)
+        response = client.models.generate_content(
+            model="gemini-1.5-flash",  # ✅ Stable model name
+            contents=prompt
+        )
         ans = response.text.strip()
         
-        print(f"✅ AI SUCCESS: {ans[:50]}...")  # Debug log
-        
-        # Save to cache
         ai_cache[question] = ans
         with open("ai_cache.json", "w") as f:
             json.dump(ai_cache, f)
@@ -85,9 +84,8 @@ def get_answer(sub, question):
         return ans
         
     except Exception as e:
-        print(f"❌ AI ERROR: {e}")
-        return f"AI failed: {str(e)[:100]}"
-
+        print(f"AI Error: {e}")
+        return "AI temporarily down. Try pre-written questions like 'What is 2+2?'"
 
 # --------------------------
 # AI MCQs
