@@ -137,10 +137,16 @@ def generate_ai_mcqs(subject, num_questions=5):
 @app.route("/")
 def home():
     return render_template("home.html", subjects=subjects)
+@app.errorhandler(404)
+def not_found(error):
+    return "<h1>404 - Page Not Found</h1><p>Try: <a href='/'>Home</a> or /subject/Math</p>", 404
 
 @app.route("/subject/<sub>")
 def subject_page(sub):
+    if not sub or sub not in subjects:
+        return f"<h1>Invalid subject: {sub}</h1><a href='/'>Home</a>", 400
     return render_template("subject_page1.html", subject=sub)
+
 
 @app.route("/subject/<sub>/questions")
 def view_questions(sub):
@@ -204,9 +210,7 @@ def ai_quiz(sub):
 
     mcqs = generate_ai_mcqs(sub, num_questions=5)
     return render_template("quiz.html", subject=sub, mcqs=mcqs, mcqs_json=json.dumps(mcqs))
-@app.errorhandler(404)
-def not_found(error):
-    return "<h1>404 - Page Not Found</h1><p>Try: <a href='/'>Home</a> or /subject/Math</p>", 404
+
 # --------------------------
 # Run app
 # --------------------------
