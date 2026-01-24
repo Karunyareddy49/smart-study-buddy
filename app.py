@@ -57,22 +57,16 @@ else:
 # Helper to get answer with subject-aware prompt and logging
 # --------------------------
 def get_answer(sub, question):
-    # Pre-written answers FIRST
     ans = questions.get(sub, {}).get(question)
-    if ans:
-        return ans
-
-    # Cache check
-    if question in ai_cache:
-        return ai_cache[question]
-
-    # Use your EXISTING client (already working)
+    if ans: return ans
+    
+    if question in ai_cache: return ai_cache[question]
+    
     try:
-        prompt = f"Answer this {sub} question simply for students: {question}"
-        
-        # YOUR ORIGINAL WORKING SYNTAX (just fix model name)
+        # ✅ FIX: Use stable model name
+        prompt = f"Simple {sub} answer: {question}"
         response = client.models.generate_content(
-            model="gemini-1.5-flash",  # ✅ Stable model name
+            model="gemini-1.5-flash-exp",  # ← CHANGE THIS LINE ONLY
             contents=prompt
         )
         ans = response.text.strip()
@@ -80,12 +74,12 @@ def get_answer(sub, question):
         ai_cache[question] = ans
         with open("ai_cache.json", "w") as f:
             json.dump(ai_cache, f)
-            
         return ans
         
     except Exception as e:
-        print(f"AI Error: {e}")
-        return "AI temporarily down. Try pre-written questions like 'What is 2+2?'"
+        print(f"AI failed: {e}")
+        return "Try pre-written questions (they work!)"
+
 
 # --------------------------
 # AI MCQs
