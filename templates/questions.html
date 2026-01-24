@@ -1,29 +1,32 @@
 <!DOCTYPE html>
 <html>
-<head><title>{{ subject }} Questions</title>
-<style>body{font-family:Arial;margin:40px;background:#f5f5f5;}
-.container{max-width:800px;margin:0 auto;background:white;padding:30px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);}
-.question{background:#f8f9fa;padding:15px;margin:15px 0;border-radius:8px;border-left:4px solid #007bff;}
-.btn{background:#007bff;color:white;padding:10px 20px;text-decoration:none;border-radius:5px;display:inline-block;margin:5px;}
-</style>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ subject }} Questions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
+    h1 { color: #333; }
+    ul { list-style-type: none; padding: 0; }
+    li { background: #e0e0e0; margin: 10px 0; padding: 10px; border-radius: 8px; }
+    a { text-decoration: none; color: #333; }
+    </style>
 </head>
+
 <body>
-<div class="container">
-<h1>📚 {{ subject }} Questions</h1>
-{% if questions %}
-{% for q, a in questions.items() %}
-<div class="question">
-<h3>{{ q }}</h3>
-<p><strong>{{ a }}</strong></p>
-</div>
-{% endfor %}
-{% else %}
-<p>No questions yet for {{ subject }}</p>
-{% endif %}
-<a href="{{ url_for('subject_page', sub=subject) }}" class="btn">← Back</a>
-<a href="{{ url_for('home') }}" class="btn">🏠 Home</a>
-</div>
+<header>{{ subject }} - Questions</header>
+
+<ul>
+    {% for q, a in questions.items() %}
+    <li>
+        <strong>{{ q }}</strong> → {{ a }}
+    </li>
+    {% endfor %}
+</ul>
+
+<a href="{{ url_for('subject_page', subject=subject) }}">⬅ Back</a>
 </body>
+
 </html>
 
 
