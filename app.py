@@ -56,37 +56,26 @@ else:
 # --------------------------
 # Helper to get answer with subject-aware prompt and logging
 # --------------------------
-
 def get_answer(sub, question):
-    # 1. Check pre-written questions
     ans = questions.get(sub, {}).get(question)
-    if ans:
-        return ans
-
-    # 2. Check cache
-    if question in ai_cache:
-        return ai_cache[question]
-
-    # 3. Generate AI answer
+    if ans: return ans
+    
+    if question in ai_cache: return ai_cache[question]
+    
     try:
-        prompt = f"Answer this question in simple terms for a student in {sub}: {question}"
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=prompt
-        )
+        model = client.models.get("gemini-2.0-flash-exp")
+        response = model.generate_content(f"Answer simply for {sub} student: {question}")
         ans = response.text.strip()
-        print(f"AI output for '{question}': {ans}")  # Debug log
-
-        # Save in cache
+        
         ai_cache[question] = ans
         with open("ai_cache.json", "w") as f:
             json.dump(ai_cache, f)
-
-        return ans if ans else "Sorry, AI could not generate an answer."
-
+        return ans
+        
     except Exception as e:
-        print(f"AI generation failed for '{question}': {e}")
-        return "Sorry, the answer could not be generated."
+        print(f"AI failed: {e}")
+        # ✅ BETTER FALLBACK:
+        return f"Sorry, AI unavailable. Try: 'What is 2+2?' (pre-written works!)"
 
 # --------------------------
 # AI MCQs
