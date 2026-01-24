@@ -2,32 +2,90 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>{{ subject }} Questions</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>{{ subject }} Questions - Smart Study Buddy</title>
     <style>
-    body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
-    h1 { color: #333; }
-    ul { list-style-type: none; padding: 0; }
-    li { background: #e0e0e0; margin: 10px 0; padding: 10px; border-radius: 8px; }
-    a { text-decoration: none; color: #333; }
+        body {
+            margin: 0;
+            font-family: Poppins, sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h1 {
+            text-align: center;
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .question {
+            background: rgba(255,255,255,0.95);
+            padding: 25px;
+            margin: 20px 0;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+        }
+        .question h3 {
+            color: #333;
+            margin: 0 0 15px;
+            font-size: 1.3rem;
+        }
+        .question p {
+            color: #555;
+            font-size: 1.1rem;
+            margin: 0;
+            line-height: 1.6;
+        }
+        .btn-group {
+            text-align: center;
+            margin-top: 40px;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            margin: 10px;
+            background: linear-gradient(135deg, #6A82FB, #FC5C7D);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+        }
     </style>
 </head>
-
 <body>
-<header>{{ subject }} - Questions</header>
-
-<ul>
-    {% for q, a in questions.items() %}
-    <li>
-        <strong>{{ q }}</strong> → {{ a }}
-    </li>
-    {% endfor %}
-</ul>
-
-<a href="{{ url_for('subject_page', subject=subject) }}">⬅ Back</a>
+    <div class="container">
+        <h1>📚 {{ subject }} Questions</h1>
+        
+        {% if questions %}
+            {% for question, answer in questions.items() %}
+            <div class="question">
+                <h3>❓ {{ question }}</h3>
+                <p><strong>✅ {{ answer }}</strong></p>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="question">
+                <p>No pre-written questions yet. <a href="{{ url_for('ask_ai2', sub=subject) }}">Ask AI instead!</a></p>
+            </div>
+        {% endif %}
+        
+        <div class="btn-group">
+            <a href="{{ url_for('subject_page', sub=subject) }}" class="btn">← Back to {{ subject }}</a>
+            <a href="{{ url_for('home') }}" class="btn">🏠 Home</a>
+        </div>
+    </div>
 </body>
-
 </html>
+
 
 
 
