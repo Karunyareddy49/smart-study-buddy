@@ -68,8 +68,8 @@
     {% set icons = ["🧮","🔬","📘","⚡"] %}
     {% for sub in subjects %}
         <a class="card" href="/subject/{{ sub }}">{{ sub }}</a>
-            <div class="icon">{{ icons[loop.index0 % icons|length] }}</div>
             <div class="text">{{ sub }}</div>
+            <div class="icon">{{ icons[loop.index0 % icons|length] }}</div>  
         </a>
     {% endfor %}
 </div>
