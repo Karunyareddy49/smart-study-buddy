@@ -56,74 +56,111 @@ else:
 # --------------------------
 # Helper to get answer with subject-aware prompt and logging
 # --------------------------
+
 def get_answer(sub, question):
-    # Pre-written answers (WORKS)
+    # 1. Check pre-written questions
     ans = questions.get(sub, {}).get(question)
     if ans:
         return ans
 
-    # Cache check
+    # 2. Check cache
     if question in ai_cache:
         return ai_cache[question]
 
+    # 3. Generate AI answer
     try:
-        # ✅ 2026 WORKING MODELS (from your error logs)
+        prompt = f"Answer this question in simple terms for a student in {sub}: {question}"
         response = client.models.generate_content(
-            model="gemini-2.5-flash",  # ✅ ACTIVE in 2026
-            contents=f"Simple {sub} answer: {question}"
+            model="gemini-2.5-flash",
+            contents=prompt
         )
         ans = response.text.strip()
-        
+        print(f"AI output for '{question}': {ans}")  # Debug log
+
+        # Save in cache
         ai_cache[question] = ans
         with open("ai_cache.json", "w") as f:
             json.dump(ai_cache, f)
-        return ans
-        
-    except Exception as e:
-        print(f"AI ERROR: {e}")
-        return "AI model update needed. Pre-written questions work perfectly!"
 
-# AI MCQs
+        return ans if ans else "Sorry, AI could not generate an answer."
+
+    except Exception as e:
+        print(f"AI generation failed for '{question}': {e}")
+        return "Sorry, the answer could not be generated."
+
 # --------------------------
-def generate_ai_mcqs(subject, num_questions=5):
+# AI MCQs
+def generate_ai_mcqs(subject, num_questions=5, difficulty="medium"):
     prompt = f"""
-    Generate {num_questions} challenging multiple-choice questions for Level 3 quiz
-    on the subject: {subject}.
-    Format ONLY as valid JSON like this:
-    [
-      {{
-        "question": "Question text",
-        "options": ["option1", "option2", "option3", "option4"],
-        "answer": "correct option"
-      }}
-    ]
-    """
+You are an expert exam question setter.
+
+Generate {num_questions} {difficulty} difficulty multiple-choice questions
+for a Level 3 quiz on the subject: {subject}.
+
+STRICT RULES:
+- EXACTLY 4 options per question
+- Answer MUST be one of the options
+- No explanations
+- No markdown, no backticks
+- Output ONLY valid JSON
+
+JSON format:
+[
+  {{
+    "question": "Question text",
+    "options": ["Option A", "Option B", "Option C", "Option D"],
+    "answer": "Option A"
+  }}
+]
+"""
+
     try:
         response = client.models.generate_content(
             model="gemini-2.5-flash",
             contents=prompt
         )
+
         text = response.text.strip()
+
+        # --- Safe JSON extraction ---
         start = text.find("[")
         end = text.rfind("]") + 1
-        if start == -1 or end == -1:
-            raise ValueError("No JSON found in AI output")
+        if start == -1 or end == 0:
+            raise ValueError("No JSON array found in AI output")
+
         mcqs = json.loads(text[start:end])
-        # Validate
+
+        # --- Validation ---
+        validated_mcqs = []
         for q in mcqs:
-            if "question" not in q or "options" not in q or "answer" not in q:
-                raise ValueError("Invalid MCQ structure")
-        return mcqs
+            if (
+                isinstance(q, dict)
+                and "question" in q
+                and "options" in q
+                and "answer" in q
+                and isinstance(q["options"], list)
+                and len(q["options"]) == 4
+                and q["answer"] in q["options"]
+            ):
+                validated_mcqs.append(q)
+
+        if not validated_mcqs:
+            raise ValueError("All MCQs failed validation")
+
+        return validated_mcqs
+
     except Exception as e:
         print("AI MCQs generation failed:", e)
-        return [
-            {"question": f"Sample {subject} Q1?", "options": ["A","B","C","D"], "answer": "A"},
-            {"question": f"Sample {subject} Q2?", "options": ["A","B","C","D"], "answer": "B"},
-            {"question": f"Sample {subject} Q3?", "options": ["A","B","C","D"], "answer": "C"},
-            {"question": f"Sample {subject} Q4?", "options": ["A","B","C","D"], "answer": "D"},
-            {"question": f"Sample {subject} Q5?", "options": ["A","B","C","D"], "answer": "A"}
-        ]
 
+        # --- Guaranteed fallback (never crashes demo) ---
+        return [
+            {
+                "question": f"Sample {subject} question {i + 1}?",
+                "options": ["Option A", "Option B", "Option C", "Option D"],
+                "answer": "Option A"
+            }
+            for i in range(num_questions)
+        ]
 # --------------------------
 # Routes
 # --------------------------
@@ -131,22 +168,19 @@ def generate_ai_mcqs(subject, num_questions=5):
 @app.route("/")
 def home():
     return render_template("home.html", subjects=subjects)
-@app.route("/subject/")
-def subject_empty():
-    return '<h1>No subject selected</h1><p><a href="/">← Choose a subject</a></p>'
 
 @app.route("/subject/<sub>")
 def subject_page(sub):
-    if sub not in subjects:
-        return f'<h1>{sub} not available</h1><p><a href="/">← Choose from: {", ".join(subjects)}</a></p>'
     return render_template("subject_page1.html", subject=sub)
-
 
 @app.route("/subject/<sub>/questions")
 def view_questions(sub):
     sub_questions = questions.get(sub, {})
-    return render_template("questions.html", subject=sub, questions=sub_questions)
-
+    return render_template(
+        "questions.html",
+        subject=sub,
+        questions=sub_questions
+    )
 @app.route("/ai")
 def ask_ai():
     try:
@@ -201,7 +235,18 @@ def ai_quiz(sub):
 
     mcqs = generate_ai_mcqs(sub, num_questions=5)
     return render_template("quiz.html", subject=sub, mcqs=mcqs, mcqs_json=json.dumps(mcqs))
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template("error.html",
+                           code=404,
+                           message="Page not found 😕"), 404
 
+
+@app.errorhandler(500)
+def internal_error(e):
+    return render_template("error.html",
+                           code=500,
+                           message="Something went wrong on our side 😓 Please try again."), 500
 # --------------------------
 # Run app
 # --------------------------
