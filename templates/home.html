@@ -3,53 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Smart Study Buddy</title>
-    <style>
-        body {
-            margin: 0;
-            font-family: Poppins, sans-serif;
-            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
-            background-size: 200% 200%;
-            animation: gradientMove 6s infinite alternate;
-        }
-        @keyframes gradientMove {
-            0% { background-position: left top; }
-            100% { background-position: right bottom; }
-        }
-        header {
-            text-align: center;
-            padding: 40px;
-            font-size: 3rem;
-            font-weight: bold;
-            color: white;
-        }
-        .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 25px;
-            padding: 30px;
-        }
-        .card {
-            width: 260px;
-            padding: 30px 20px;
-            background: linear-gradient(135deg, #6A82FB, #FC5C7D);
-            border-radius: 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            color: white;
-            text-align: center;
-            text-decoration: none;
-            transition: transform 0.35s ease, box-shadow 0.35s ease;
-        }
-        .card:hover {
-            transform: translateY(-10px) scale(1.05);
-            box-shadow: 0 18px 40px rgba(0,0,0,0.4);
-        }
-        .icon { font-size: 3rem; margin-bottom: 10px; }
-        .title { font-size: 1.5rem; font-weight: bold; }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 <header>🤖 Smart Study Buddy</header>
+<p>Your AI-powered learning companion</p>
+    
     <div class="container">
     {% set icons = ["🧮","🔬","📘","⚡"] %}
     {% for sub in subjects %}
@@ -61,7 +20,10 @@
         </a>
     {% endfor %}
     </div>
-</body>
+</body> 
+<footer>
+    <p>Built with ❤️ using Flask & Gemini AI</p>
+</footer>
 </html>
 
 
