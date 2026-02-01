@@ -1,80 +1,78 @@
-/* General page settings */
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 20px;
+* {
+    margin: 0;
     padding: 0;
-    background-color: #f7f9fc;
-    color: #333;
+    box-sizing: border-box;
 }
 
-/* Headings */
-h1 {
-    color: #2c3e50;
-    margin-bottom: 15px;
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f5f7fb;
+    color: #1f2937;
 }
 
-h2 {
-    color: #34495e;
+/* Hero */
+.hero {
+    text-align: center;
+    padding: 60px 20px;
+    background: linear-gradient(135deg, #4f46e5, #6366f1);
+    color: white;
 }
 
-/* Links */
-a {
-    color: #2980b9;
-    text-decoration: none;
-}
-
-a:hover {
-    text-decoration: underline;
-}
-
-/* Lists */
-ul {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-li {
+.hero h1 {
+    font-size: 2.5rem;
     margin-bottom: 10px;
 }
 
-/* Buttons */
-button {
-    background-color: #2980b9;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
+.hero p {
+    font-size: 1.1rem;
+    opacity: 0.9;
 }
 
-button:hover {
-    background-color: #1f618d;
+/* Subjects */
+.subjects {
+    max-width: 1100px;
+    margin: 40px auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 0 20px;
 }
 
-/* Forms */
-input[type="text"], input[type="radio"] {
-    margin: 5px 0;
+.card {
+    background: white;
+    border-radius: 16px;
+    padding: 25px;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-label {
-    display: block;
-    margin-bottom: 5px;
+.card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px rgba(0,0,0,0.12);
 }
 
-/* Quiz questions */
-hr {
-    margin: 15px 0;
-    border: 0;
-    border-top: 1px solid #ccc;
+.icon {
+    font-size: 2rem;
+    margin-bottom: 10px;
 }
 
-/* Container for content */
-.container {
-    max-width: 800px;
-    margin: 0 auto;
+.card h3 {
+    font-size: 1.2rem;
+    margin-bottom: 6px;
+}
+
+.card p {
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+/* Footer */
+footer {
+    text-align: center;
     padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    font-size: 0.85rem;
+    color: #6b7280;
 }
+
