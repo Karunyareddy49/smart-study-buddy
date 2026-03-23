@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ subject }} Quiz</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- MathJax -->
+    <script>
+    window.MathJax = {
+        tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+    <style>
+    .correct { color: green; font-weight: bold; }
+    .wrong { color: red; font-weight: bold; }
+    .feedback { margin-top: 5px; }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <h1>{{ subject }} Quiz</h1>
+
+    <form id="quizForm">
+        {% for q in mcqs %}
+            {% set q_index = loop.index0 %}
+
+            <div class="question-block">
+                <p><strong>Question {{ loop.index }}:</strong> {{ q.question | safe }}</p>
+
+                {% for option in q.options %}
+                    <label>
+                        <!-- ✅ FIX: use index as value -->
+                        <input type="radio" name="q{{ q_index }}" value="{{ loop.index0 }}">
+                        {{ option | safe }}
+                    </label><br>
+                {% endfor %}
+
+                <!-- ✅ FIX: correct Jinja syntax -->
+                <div class="feedback" data-answer="{{ q.answer_index }}"></div>
+            </div>
+
+            <hr>
+        {% endfor %}
+
+        <button type="button" onclick="checkAnswers()">Submit Quiz</button>
+    </form>
+
+    <p id="score"></p>
+    <a href="{{ url_for('home') }}">Back to Home</a>
+</div>
+
+<script>
+function checkAnswers() {
+    let score = 0;
+    const blocks = document.querySelectorAll(".question-block");
+
+    blocks.forEach((block) => {
+        const selected = block.querySelector("input:checked");
+        const feedback = block.querySelector(".feedback");
+        const correctIndex = feedback.getAttribute("data-answer");
+
+        feedback.innerHTML = "";
+
+        if (!selected) {
+            feedback.innerHTML = "<span class='wrong'>No answer selected</span>";
+            return;
+        }
+
+        if (selected.value == correctIndex) {
+            feedback.innerHTML = "<span class='correct'>✅ Correct!</span>";
+            score++;
+        } else {
+            const options = block.querySelectorAll("label");
+            const correctText = options[correctIndex].innerText;
+
+            feedback.innerHTML =
+                "<span class='wrong'>❌ Wrong! Correct answer: " + correctText + "</span>";
+        }
+    });
+
+    document.getElementById("score").innerHTML =
+        "<strong>Your Score: " + score + " / " + blocks.length + "</strong>";
+
+    // Re-render MathJax if needed
+    if (window.MathJax && MathJax.typesetPromise) {
+        MathJax.typesetPromise();
+    }
+}
+</script>
+
+</body>
+</html>

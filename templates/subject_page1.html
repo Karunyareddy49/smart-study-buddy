@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{{ subject }}</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Poppins, sans-serif;
+            background: linear-gradient(135deg, #74ebd5, #ACB6E5);
+            background-size: 200% 200%;
+            animation: gradientMove 6s infinite alternate;
+            text-align: center;
+            color: white;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: left top; }
+            100% { background-position: right bottom; }
+        }
+
+        header {
+            padding: 40px;
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        p {
+            font-size: 1.2rem;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 25px;
+            padding: 30px;
+        }
+
+        .card {
+            width: 260px;
+            padding: 30px 20px;
+            background: linear-gradient(135deg, #6A82FB, #FC5C7D);
+            border-radius: 25px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px) scale(1.05);
+            box-shadow: 0 18px 40px rgba(0,0,0,0.4);
+        }
+
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+        }
+
+        .text {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<header>{{ subject }}</header>
+
+<div class="container" style="flex-direction: column; gap: 15px;">
+
+    <a class="card" href="{{ url_for('subject_questions', sub=subject) }}">
+        📖 View Questions
+    </a>
+    <a class="card" href="{{ url_for('ai_quiz', sub=subject) }}">
+        📝 Take Quiz
+    </a>
+    <a class="card" href="{{ url_for('ask_ai', sub=subject) }}">
+        ❓ Ask AI
+    </a>
+<a href="{{ url_for('home') }}">⬅🏠 Back to Home</a>
+</body>
+</html>
+
