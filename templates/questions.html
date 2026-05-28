@@ -27,12 +27,12 @@
             {% endfor %}
         {% else %}
             <div class="question">
-                <p>No questions yet for {{ subject }}. <a href="{{ url_for('ask_ai2', sub=subject) }}" style="color: #6A82FB;">Try AI instead!</a></p>
+                <p>No questions yet for {{ subject }}. <a href="{{ url_for('ask_ai', sub=subject) }}" style="color: #6A82FB;">Try AI instead!</a></p>
             </div>
         {% endif %}
         
         <div style="text-align: center; margin-top: 40px;">
-            <a href="{{ url_for('subject_page', sub=subject) }}" class="btn">← Back to {{ subject }}</a>
+            <a href="{{ url_for('subject_page', subject=subject) }}" class="btn">← Back to {{ subject }}</a>
             <a href="{{ url_for('home') }}" class="btn">🏠 Home</a>
         </div>
     </div>

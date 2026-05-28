@@ -134,10 +134,18 @@
 
     
     <div class="container">
+    <!-- Study Schedule Card - Featured -->
+    <a class="card" href="/study-schedule" style="background: linear-gradient(135deg, #FF6B6B, #4ECDC4);">
+        <div class="icon">📚</div>
+        <div class="title">Study Schedule</div>
+        <p>Plan Your Exam Prep</p>
+    </a>
+
+    <!-- Subject Cards -->
     {% set icons = ["🧮","🔬","📘","⚡"] %}
     {% for sub in subjects %}
        <!-- ✅ FIXED: Consistent 'sub' variable + correct url_for parameter -->
-       <a class="card" href="{{ url_for('subject_page', sub=sub) }}">
+       <a class="card" href="{{ url_for('subject_page', subject=sub) }}">
             <div class="icon">{{ icons[loop.index0 % icons|length] }}</div>
             <div class="title">{{ sub }}</div>
             <p>AI Questions & Quizzes</p>

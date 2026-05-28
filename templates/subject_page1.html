@@ -11,9 +11,9 @@
 <div class="container">
     <h1>📚 {{ subject }} Hub</h1>
     <div style="text-align: center; margin: 40px 0;">
-        <a href="{{ url_for('view_questions', sub=subject) }}" class="btn">📖 Questions</a>
-        <a href="{{ url_for('ask_ai2', sub=subject) }}" class="btn">🤖 Ask AI</a>
-        <a href="{{ url_for('ai_quiz', sub=subject) }}" class="btn">🎯 Quiz</a>
+        <a href="{{ url_for('view_questions', subject=subject) }}" class="btn">📖 Questions</a>
+        <a href="{{ url_for('ask_ai', subject=subject) }}" class="btn">🤖 Ask AI</a>
+        <a href="{{ url_for('ai_quiz', subject=subject) }}" class="btn">🎯 Quiz</a>
         <a href="{{ url_for('home') }}" class="btn">🏠 Home</a>
     </div>
 </div>
