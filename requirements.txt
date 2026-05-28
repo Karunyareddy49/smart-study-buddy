@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 annotated-types==0.7.0
 anyio==4.12.1
 blinker==1.9.0
@@ -51,3 +52,11 @@ uritemplate==4.2.0
 urllib3==2.6.3
 websockets==15.0.1
 Werkzeug==3.1.5
+=======
+
+Flask
+python-dotenv
+google-genai
+gunicorn
+
+>>>>>>> b1c4fcba635651a4bbb1f7990ae7742fc06b1094
